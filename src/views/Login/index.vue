@@ -36,6 +36,7 @@
 
 <script>
 import { login } from '@/api/user'
+import { mapMutations } from 'vuex'
 export default {
   name: 'Login',
   data () {
@@ -56,10 +57,12 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('user', ['setToken']),
     async login () {
       this.isLoading = true
       try {
-        await login(this.mobile, this.code)
+        const res = await login(this.mobile, this.code)
+        this.setToken(res.data)
         this.$toast.success('登录成功')
         this.$router.push('/')
       } catch (err) {

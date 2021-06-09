@@ -1,5 +1,7 @@
+// 用户有关的请求
 import axios from '@/utils/request'
 
+// 登录注册
 export function login (mobile, code) {
   return axios({
     method: 'post',
@@ -9,4 +11,9 @@ export function login (mobile, code) {
       code
     }
   })
+}
+
+// 获取用户信息
+export function getUserInfo () {
+  return axios.get('/v1_0/user/profile')
 }

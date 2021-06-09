@@ -8,7 +8,14 @@ import {
   Toast,
   Empty,
   Tabbar,
-  TabbarItem
+  TabbarItem,
+  Tag,
+  Image as VanImage,
+  Col,
+  Row,
+  Cell,
+  CellGroup,
+  Dialog
 } from 'vant'
 Vue.use(Button)
 Vue.use(Icon)
@@ -19,3 +26,10 @@ Vue.use(Toast)
 Vue.use(Empty)
 Vue.use(Tabbar)
 Vue.use(TabbarItem)
+Vue.use(Tag)
+Vue.use(VanImage)
+Vue.use(Col)
+Vue.use(Row)
+Vue.use(Cell)
+Vue.use(CellGroup)
+Vue.use(Dialog)

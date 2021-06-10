@@ -7,7 +7,15 @@ import Home from '@/views/Layout/Home'
 import QA from '@/views/Layout/QA'
 import Video from '@/views/Layout/Video'
 import User from '@/views/Layout/User'
+import store from '@/store'
 Vue.use(VueRouter)
+
+// 解决路由报错问题
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push (location, onResolve, onReject) {
+  if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
+  return originalPush.call(this, location).catch(err => err)
+}
 
 const routes = [
   {
@@ -46,4 +54,22 @@ const router = new VueRouter({
   routes
 })
 
+const loginUrls = ['/user']
+
+// 配置导航守卫
+router.beforeEach(function (to, from, next) {
+  // 身份token
+  const token = store.state.user.token.token
+  if (token) return next()
+  if (loginUrls.includes(to.path)) {
+    router.push({
+      path: '/login',
+      query: {
+        back: to.path
+      }
+    })
+  } else {
+    next()
+  }
+})
 export default router

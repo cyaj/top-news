@@ -1,8 +1,10 @@
 import axios from 'axios'
 import store from '@/store'
-
+import router from '@/router'
+import { Toast } from 'vant'
+const baseURL = 'http://toutiao-app.itheima.net'
 const request = axios.create({
-  baseURL: 'http://toutiao-app.itheima.net',
+  baseURL,
   timeout: 5000
 })
 
@@ -23,9 +25,52 @@ request.interceptors.request.use(function (config) {
 request.interceptors.response.use(function (response) {
   // 对响应数据做点什么
   return response.data
-}, function (error) {
+}, async function (error) {
   // 对响应错误做点什么
-  return Promise.reject(error)
+  if (error.response.status === 401) {
+    // token过期，需要刷新token
+    const tokenObj = store.state.user.token
+    if (!tokenObj.refresh_token) {
+      // 没有刷新token，跳转登录页
+      toLogin()
+    }
+    // 有刷新token，发送请求刷新token
+    try {
+      // 刷新成功
+      const res = await axios({
+        method: 'put',
+        url: baseURL + '/v1_0/authorizations',
+        headers: {
+          Authorization: 'Bearer ' + tokenObj.refresh_token
+        }
+      })
+      // 保存新token
+      store.commit('user/setToken', {
+        token: res.data.data.token,
+        refresh_token: tokenObj.refresh_token
+      })
+      // 重新发送请求并返回
+      // console.log(error.config)
+      return request(error.config)
+    } catch (error) {
+      // 刷新失败，跳转登录
+      toLogin()
+    }
+  } else {
+    return Promise.reject(error)
+  }
 })
+
+// 跳转登录页
+function toLogin () {
+  store.commit('user/removeToken')
+  router.push({
+    path: '/login',
+    query: {
+      back: router.currentRoute.path
+    }
+  })
+  Toast.fail('登录信息失效')
+}
 
 export default request

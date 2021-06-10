@@ -27,7 +27,7 @@
           :loading="isLoading"
           loading-text="登录中..."
         >
-          提交
+          登录
         </van-button>
       </div>
     </van-form>
@@ -64,7 +64,8 @@ export default {
         const res = await login(this.mobile, this.code)
         this.setToken(res.data)
         this.$toast.success('登录成功')
-        this.$router.push('/')
+        const back = this.$route.query.back || '/'
+        this.$router.push(back)
       } catch (err) {
         this.$toast.fail('登录失败')
       }

@@ -1,12 +1,14 @@
 <template>
-  <div class="user-profile">
-    <div class="info">
-      <van-image round :src="userInfo.photo" />
-      <h3 class="name">
-        {{ userInfo.name }}
-        <br />
-        <van-tag size="mini">申请认证{{ userInfo.birthday }}</van-tag>
-      </h3>
+  <div class="user">
+    <div class="user-profile">
+      <div class="info">
+        <van-image round :src="userInfo.photo" />
+        <h3 class="name">
+          {{ userInfo.name }}
+          <br />
+          <van-tag size="mini">{{ userInfo.birthday }}</van-tag>
+        </h3>
+      </div>
     </div>
     <!-- 操作链接 -->
     <van-row class="user-links">
@@ -25,8 +27,8 @@
     </van-row>
     <!-- 编辑入口 -->
     <van-cell-group class="user-group">
-      <van-cell icon="edit" title="编辑资料" to="/user/profile" is-link />
-      <van-cell icon="chat-o" title="小智同学" to="/user/chat" is-link />
+      <van-cell icon="edit" title="编辑资料" is-link />
+      <van-cell icon="chat-o" title="小智同学" is-link />
       <van-cell icon="setting-o" title="系统设置" is-link />
       <van-cell icon="warning-o" title="退出登录" is-link @click="logout" />
     </van-cell-group>
@@ -34,7 +36,6 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
 import { getUserInfo } from '@/api/user'
 export default {
   name: 'User',
@@ -45,11 +46,9 @@ export default {
   },
   async created () {
     const res = await getUserInfo()
-    console.log(res)
     this.userInfo = res.data
   },
   methods: {
-    ...mapMutations('user', ['removeToken']),
     async logout () {
       try {
         await this.$dialog.confirm({
@@ -60,7 +59,7 @@ export default {
       } catch (error) {
         return
       }
-      this.removeToken()
+      this.$store.commit('user/removeToken')
       this.$toast.success('退出成功')
       this.$router.push('/login')
     }
@@ -104,7 +103,6 @@ export default {
     font-size: 12px;
     text-align: center;
     background-color: #fff;
-    color: #000;
     .van-icon {
       display: block;
       font-size: 24px;

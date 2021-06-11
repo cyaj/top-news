@@ -17,3 +17,12 @@ export function login (mobile, code) {
 export function getUserInfo () {
   return axios.get('/v1_0/user/profile')
 }
+
+// 更新用户信息
+export function updateUserInfo (data) {
+  return axios({
+    method: 'patch',
+    url: '/v1_0/user/profile',
+    data
+  })
+}

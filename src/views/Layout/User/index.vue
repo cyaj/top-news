@@ -2,7 +2,7 @@
   <div class="user">
     <div class="user-profile">
       <div class="info">
-        <van-image round :src="userInfo.photo" />
+        <van-image round fit="cover" :src="userInfo.photo" />
         <h3 class="name">
           {{ userInfo.name }}
           <br />
@@ -27,7 +27,7 @@
     </van-row>
     <!-- 编辑入口 -->
     <van-cell-group class="user-group">
-      <van-cell icon="edit" title="编辑资料" is-link />
+      <van-cell icon="edit" title="编辑资料" to="/user/edit" is-link />
       <van-cell icon="chat-o" title="小智同学" is-link />
       <van-cell icon="setting-o" title="系统设置" is-link />
       <van-cell icon="warning-o" title="退出登录" is-link @click="logout" />
@@ -36,17 +36,14 @@
 </template>
 
 <script>
-import { getUserInfo } from '@/api/user'
+import { mapState } from 'vuex'
 export default {
   name: 'User',
-  data () {
-    return {
-      userInfo: {}
-    }
+  computed: {
+    ...mapState('user', ['userInfo'])
   },
-  async created () {
-    const res = await getUserInfo()
-    this.userInfo = res.data
+  created () {
+    this.$store.dispatch('user/getUserInfo')
   },
   methods: {
     async logout () {

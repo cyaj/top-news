@@ -7,6 +7,7 @@ import Home from '@/views/Layout/Home'
 import QA from '@/views/Layout/QA'
 import Video from '@/views/Layout/Video'
 import User from '@/views/Layout/User'
+import UserEdit from '@/views/Layout/User/edit'
 import store from '@/store'
 Vue.use(VueRouter)
 
@@ -45,6 +46,10 @@ const routes = [
     component: Login
   },
   {
+    path: '/user/edit',
+    component: UserEdit
+  },
+  {
     path: '*',
     component: NotFound
   }
@@ -54,7 +59,7 @@ const router = new VueRouter({
   routes
 })
 
-const loginUrls = ['/user']
+const loginUrls = ['/user', '/user/edit']
 
 // 配置导航守卫
 router.beforeEach(function (to, from, next) {

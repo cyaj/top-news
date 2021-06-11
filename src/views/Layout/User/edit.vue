@@ -23,7 +23,7 @@
         is-link
         @click="isShowGender = true"
       />
-      <van-cell title="生日" :value="userInfo.birthday" is-link />
+      <van-cell title="生日" :value="userInfo.birthday" is-link @click="showEditBirthday" />
     </van-cell-group>
     <!-- 昵称弹出框 -->
     <van-dialog
@@ -51,19 +51,36 @@
         <van-cell title="女" is-link @click="updateGander(1)" ></van-cell>
       </van-cell-group>
     </van-popup>
+    <!-- 生日弹出框 -->
+    <van-popup v-model="isShowBirthday" position="bottom">
+      <van-datetime-picker
+        v-model="birthday"
+        type="date"
+        title="选择年月日"
+        :min-date="minDate"
+        :max-date="maxDate"
+        @cancel="isShowBirthday = false"
+        @confirm="updateBirthday"
+      />
+    </van-popup>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import { updateUserInfo } from '@/api/user'
+import moment from 'moment'
 export default {
   name: 'UserEdit',
   data () {
     return {
       isShowNickname: false,
       isShowGender: false,
-      nickname: ''
+      isShowBirthday: false,
+      nickname: '',
+      birthday: new Date(),
+      minDate: new Date('1960-01-01'),
+      maxDate: new Date()
     }
   },
   computed: {
@@ -92,6 +109,18 @@ export default {
       this.$store.dispatch('user/getUserInfo')
       this.$toast.success('修改性别成功')
       this.isShowGender = false
+    },
+    showEditBirthday () {
+      this.isShowBirthday = true
+      this.birthday = new Date(this.userInfo.birthday)
+    },
+    async updateBirthday () {
+      await updateUserInfo({
+        birthday: moment(this.birthday).format('YYYY-MM-DD')
+      })
+      this.$store.dispatch('user/getUserInfo')
+      this.$toast.success('修改生日成功')
+      this.isShowBirthday = false
     }
   }
 }

@@ -16,7 +16,8 @@ import {
   Cell,
   CellGroup,
   Dialog,
-  Popup
+  Popup,
+  DatetimePicker
 } from 'vant'
 Vue.use(Button)
 Vue.use(Icon)
@@ -35,3 +36,4 @@ Vue.use(Cell)
 Vue.use(CellGroup)
 Vue.use(Dialog)
 Vue.use(Popup)
+Vue.use(DatetimePicker)

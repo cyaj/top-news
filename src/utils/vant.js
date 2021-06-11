@@ -15,7 +15,8 @@ import {
   Row,
   Cell,
   CellGroup,
-  Dialog
+  Dialog,
+  Popup
 } from 'vant'
 Vue.use(Button)
 Vue.use(Icon)
@@ -33,3 +34,4 @@ Vue.use(Row)
 Vue.use(Cell)
 Vue.use(CellGroup)
 Vue.use(Dialog)
+Vue.use(Popup)

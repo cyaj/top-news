@@ -11,13 +11,46 @@
       <van-image fit="cover" round src="https://img.yzcdn.cn/vant/cat.jpeg" />
     </div>
     <van-cell-group>
-      <van-cell title="昵称" :value="userInfo.name" is-link @click="showEditNickname" />
-      <van-cell title="性别" :value="userInfo.gender ? '女' : '男'" is-link />
+      <van-cell
+        title="昵称"
+        :value="userInfo.name"
+        is-link
+        @click="showEditNickname"
+      />
+      <van-cell
+        title="性别"
+        :value="userInfo.gender ? '女' : '男'"
+        is-link
+        @click="isShowGender = true"
+      />
       <van-cell title="生日" :value="userInfo.birthday" is-link />
     </van-cell-group>
-    <van-dialog v-model="isShowNickname" title="修改昵称" @confirm="updateNickname" show-cancel-button>
-      <van-field ref="nickname" v-model="nickname" input-align="center" placeholder="请输入用户名" />
+    <!-- 昵称弹出框 -->
+    <van-dialog
+      v-model="isShowNickname"
+      title="修改昵称"
+      @confirm="updateNickname"
+      show-cancel-button
+    >
+      <van-field
+        ref="nickname"
+        v-model="nickname"
+        input-align="center"
+        placeholder="请输入用户名"
+      />
     </van-dialog>
+    <!-- 性别弹出框 -->
+    <van-popup v-model="isShowGender" position="bottom">
+      <van-nav-bar
+        title="修改性别"
+        left-text="取消"
+        @click-left="isShowGender = false"
+      />
+      <van-cell-group>
+        <van-cell title="男" is-link @click="updateGander(0)" ></van-cell>
+        <van-cell title="女" is-link @click="updateGander(1)" ></van-cell>
+      </van-cell-group>
+    </van-popup>
   </div>
 </template>
 
@@ -29,6 +62,7 @@ export default {
   data () {
     return {
       isShowNickname: false,
+      isShowGender: false,
       nickname: ''
     }
   },
@@ -52,6 +86,12 @@ export default {
       await updateUserInfo({ name: this.nickname })
       this.$store.dispatch('user/getUserInfo')
       this.$toast.success('修改昵称成功')
+    },
+    async updateGander (gender) {
+      await updateUserInfo({ gender })
+      this.$store.dispatch('user/getUserInfo')
+      this.$toast.success('修改性别成功')
+      this.isShowGender = false
     }
   }
 }
@@ -72,5 +112,4 @@ export default {
     border: 1px solid #50b0f9;
   }
 }
-
 </style>

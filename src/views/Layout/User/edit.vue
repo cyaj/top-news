@@ -8,7 +8,8 @@
     ></van-nav-bar>
     <!-- 头像部分 -->
     <div class="avatar">
-      <van-image fit="cover" round src="https://img.yzcdn.cn/vant/cat.jpeg" />
+      <van-image fit="cover" round :src="userInfo.photo" />
+      <van-uploader class="upload" :after-read="afterRead" />
     </div>
     <van-cell-group>
       <van-cell
@@ -63,24 +64,43 @@
         @confirm="updateBirthday"
       />
     </van-popup>
+    <!-- 裁剪头像区 -->
+    <div class="mask" v-if="isShowMask">
+      <VueCropper
+        ref="cropper"
+        :img="img"
+        autoCrop
+        autoCropWidth="120"
+        autoCropHeight="120"
+        fixed
+      ></VueCropper>
+      <van-button type="primary" @click="crop">裁剪</van-button>
+      <van-button class="cancel" type="primary" @click="isShowMask = false">取消</van-button>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import { updateUserInfo } from '@/api/user'
+import { updateUserInfo, uploadPhoto } from '@/api/user'
 import moment from 'moment'
+import { VueCropper } from 'vue-cropper'
 export default {
+  components: {
+    VueCropper
+  },
   name: 'UserEdit',
   data () {
     return {
       isShowNickname: false,
       isShowGender: false,
       isShowBirthday: false,
+      isShowMask: false,
       nickname: '',
       birthday: new Date(),
       minDate: new Date('1960-01-01'),
-      maxDate: new Date()
+      maxDate: new Date(),
+      img: ''
     }
   },
   computed: {
@@ -121,6 +141,27 @@ export default {
       this.$store.dispatch('user/getUserInfo')
       this.$toast.success('修改生日成功')
       this.isShowBirthday = false
+    },
+    afterRead (file) {
+      // console.log(file)
+      // const fd = new FormData()
+      // fd.append('photo', file.file)
+      // await uploadPhoto(fd)
+      // this.$store.dispatch('user/getUserInfo')
+      // this.$toast.success('修改头像成功')
+      this.isShowMask = true
+      this.img = file.content
+    },
+    crop () {
+      this.$refs.cropper.getCropBlob(async img => {
+        console.log(img)
+        const fd = new FormData()
+        fd.append('photo', img)
+        await uploadPhoto(fd)
+        this.$store.dispatch('user/getUserInfo')
+        this.$toast.success('修改头像成功')
+        this.isShowMask = false
+      })
     }
   }
 }
@@ -134,11 +175,41 @@ export default {
     width: 120px;
     height: 120px;
   }
+  .upload {
+    opacity: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 120px;
+    ::v-deep {
+      .van-uploader__input {
+        width: 120px;
+        height: 120px;
+      }
+    }
+  }
 }
 ::v-deep {
   .van-field__body {
     padding: 6px 0;
     border: 1px solid #50b0f9;
+  }
+}
+.mask {
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  .van-button {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+  }
+  .cancel {
+    right: 0;
   }
 }
 </style>

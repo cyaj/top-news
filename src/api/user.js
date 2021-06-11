@@ -26,3 +26,16 @@ export function updateUserInfo (data) {
     data
   })
 }
+
+/**
+ * 修改用户头像
+ * @param {*} fd 包含图片new FormData
+ * @returns
+ */
+export function uploadPhoto (fd) {
+  return axios({
+    method: 'patch',
+    url: '/v1_0/user/photo',
+    data: fd
+  })
+}

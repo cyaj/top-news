@@ -1,7 +1,12 @@
 // 用户有关的请求
 import axios from '@/utils/request'
 
-// 登录注册
+/**
+ * 登录注册
+ * @param {string} mobile 手机号
+ * @param {number} code 验证码
+ * @returns Promise
+ */
 export function login (mobile, code) {
   return axios({
     method: 'post',
@@ -13,12 +18,20 @@ export function login (mobile, code) {
   })
 }
 
-// 获取用户信息
+/**
+ * 获取用户信息
+ * @returns Promise
+ */
 export function getUserInfo () {
   return axios.get('/v1_0/user/profile')
 }
 
 // 更新用户信息
+/**
+ * 更新用户信息
+ * @param {Object} data 要更新的信息，对象形式
+ * @returns Promise
+ */
 export function updateUserInfo (data) {
   return axios({
     method: 'patch',

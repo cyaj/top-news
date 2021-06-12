@@ -74,8 +74,8 @@
         autoCropHeight="120"
         fixed
       ></VueCropper>
-      <van-button type="primary" @click="crop">裁剪</van-button>
-      <van-button class="cancel" type="primary" @click="isShowMask = false">取消</van-button>
+      <van-button class="confirm" type="primary" @click="crop">确定</van-button>
+      <van-button type="primary" @click="isShowMask = false">取消</van-button>
     </div>
   </div>
 </template>
@@ -143,18 +143,12 @@ export default {
       this.isShowBirthday = false
     },
     afterRead (file) {
-      // console.log(file)
-      // const fd = new FormData()
-      // fd.append('photo', file.file)
-      // await uploadPhoto(fd)
-      // this.$store.dispatch('user/getUserInfo')
-      // this.$toast.success('修改头像成功')
       this.isShowMask = true
       this.img = file.content
     },
     crop () {
       this.$refs.cropper.getCropBlob(async img => {
-        console.log(img)
+        // console.log(img)
         const fd = new FormData()
         fd.append('photo', img)
         await uploadPhoto(fd)
@@ -205,10 +199,10 @@ export default {
   left: 0;
   .van-button {
     position: absolute;
-    top: 0;
-    z-index: 1;
+    bottom: 0;
+    width: 30%;
   }
-  .cancel {
+  .confirm {
     right: 0;
   }
 }

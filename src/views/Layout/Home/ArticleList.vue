@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="article-list">
     <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
       <!-- 文章列表 -->
       <van-list
@@ -104,5 +104,10 @@ export default {
   span {
     margin-right: 10px;
   }
+}
+// 单独滚动条记录滚动位置
+.article-list {
+  height: 100%;
+  overflow: auto;
 }
 </style>

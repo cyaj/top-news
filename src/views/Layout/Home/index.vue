@@ -66,7 +66,11 @@ export default {
       }
       .van-tabs__content {
         height: 100%;
-        overflow: auto;
+        overflow: hidden;
+        .van-tab__pane {
+          height: 100%;
+          overflow: hidden;
+        }
       }
       .van-tabs__line {
         background-color: #1989fa;

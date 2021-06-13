@@ -38,7 +38,7 @@
               <div class="meta">
                 <span>{{ item.aut_name }}</span>
                 <span>{{ item.comm_count }}评论</span>
-                <span>{{ item.pubdate | formatTime }}</span>
+                <span>{{ item.pubdate | fromNow }}</span>
               </div>
             </div>
           </template>
@@ -50,15 +50,9 @@
 
 <script>
 import { getArticleList } from '@/api/article'
-import moment from 'moment'
 export default {
   props: {
     channelId: Number
-  },
-  filters: {
-    formatTime (input) {
-      return moment(input).format('YYYY/MM/DD hh:mm')
-    }
   },
   data () {
     return {
@@ -105,7 +99,7 @@ export default {
     margin-right: 10px;
   }
 }
-// 单独滚动条记录滚动位置
+// 单独滚动条，记录滚动位置
 .article-list {
   height: 100%;
   overflow: auto;

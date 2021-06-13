@@ -24,7 +24,8 @@ import {
   List,
   Grid,
   GridItem,
-  PullRefresh
+  PullRefresh,
+  Lazyload
 } from 'vant'
 Vue.use(Button)
 Vue.use(Icon)
@@ -51,3 +52,4 @@ Vue.use(List)
 Vue.use(Grid)
 Vue.use(GridItem)
 Vue.use(PullRefresh)
+Vue.use(Lazyload)

@@ -27,6 +27,7 @@
                   :key="index"
                 >
                   <van-image
+                    lazy-load
                     :src="img"
                     fit="cover"
                     :class="item.cover.images.length === 1 ? 'one' : 'three'"

@@ -23,7 +23,8 @@ import {
   Tabs,
   List,
   Grid,
-  GridItem
+  GridItem,
+  PullRefresh
 } from 'vant'
 Vue.use(Button)
 Vue.use(Icon)
@@ -49,3 +50,4 @@ Vue.use(Tabs)
 Vue.use(List)
 Vue.use(Grid)
 Vue.use(GridItem)
+Vue.use(PullRefresh)

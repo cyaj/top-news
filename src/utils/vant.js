@@ -20,7 +20,10 @@ import {
   DatetimePicker,
   Uploader,
   Tab,
-  Tabs
+  Tabs,
+  List,
+  Grid,
+  GridItem
 } from 'vant'
 Vue.use(Button)
 Vue.use(Icon)
@@ -43,3 +46,6 @@ Vue.use(DatetimePicker)
 Vue.use(Uploader)
 Vue.use(Tab)
 Vue.use(Tabs)
+Vue.use(List)
+Vue.use(Grid)
+Vue.use(GridItem)

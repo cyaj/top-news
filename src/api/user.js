@@ -26,7 +26,6 @@ export function getUserInfo () {
   return axios.get('/v1_0/user/profile')
 }
 
-// 更新用户信息
 /**
  * 更新用户信息
  * @param {Object} data 要更新的信息，对象形式

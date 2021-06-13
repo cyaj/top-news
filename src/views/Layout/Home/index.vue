@@ -18,20 +18,30 @@
     </van-nav-bar>
     <!-- 频道列表 -->
     <van-tabs v-model="active">
-      <van-tab :title="'标签' + item" v-for="item in 10" :key="item">
-        <p v-for="v in 100" :key="v">内容{{v}}</p>
+      <van-tab :title="item.name" v-for="item in channelList" :key="item.id">
+        <ArticleList :channelId="item.id"></ArticleList>
       </van-tab>
     </van-tabs>
   </div>
 </template>
 
 <script>
+import { getChannelList } from '@/api/channel'
+import ArticleList from './ArticleList.vue'
 export default {
   name: 'Home',
+  components: {
+    ArticleList
+  },
   data () {
     return {
-      active: 0
+      active: 0,
+      channelList: []
     }
+  },
+  async created () {
+    const res = await getChannelList()
+    this.channelList = res.data.channels
   }
 }
 </script>
@@ -59,7 +69,7 @@ export default {
         overflow: auto;
       }
       .van-tabs__line {
-        background-color: #50b0f9;
+        background-color: #1989fa;
       }
       .van-tab {
         padding: 0 20px;
@@ -75,7 +85,7 @@ export default {
   }
   // 搜索按钮
   .search-btn {
-    background-color: #5fbbfc;
+    background-color: #68b0f8;
     width: 100px;
     font-size: 14px;
     .van-icon {

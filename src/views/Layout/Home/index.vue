@@ -19,24 +19,36 @@
     <!-- 频道列表 -->
     <van-tabs v-model="active">
       <van-tab :title="item.name" v-for="item in channelList" :key="item.id">
+        <!-- 对应频道文章列表 -->
         <ArticleList :channelId="item.id"></ArticleList>
       </van-tab>
+      <!-- 频道列表按钮开关 -->
+      <div @click="isShowChannels = true" class="bar-btn">
+        <van-icon name="wap-nav"/>
+      </div>
     </van-tabs>
+    <!-- 频道管理弹出层 -->
+    <van-action-sheet v-model="isShowChannels" title="频道管理">
+      <ChannelEdit></ChannelEdit>
+    </van-action-sheet>
   </div>
 </template>
 
 <script>
 import { getChannelList } from '@/api/channel'
-import ArticleList from './ArticleList.vue'
+import ArticleList from './ArticleList'
+import ChannelEdit from './ChannelEdit'
 export default {
   name: 'Home',
   components: {
-    ArticleList
+    ArticleList,
+    ChannelEdit
   },
   data () {
     return {
       active: 0,
-      channelList: []
+      channelList: [],
+      isShowChannels: false
     }
   },
   async created () {
@@ -77,6 +89,20 @@ export default {
       }
       .van-tab {
         padding: 0 20px;
+      }
+      // 频道管理的开关按钮
+      .bar-btn {
+        position: fixed;
+        right: 10px;
+        top: 57px;
+        display: flex;
+        align-items: center;
+        background-color: #fff;
+        opacity: 0.8;
+        z-index:1;
+        .van-icon-wap-nav{
+          font-size: 20px;
+        }
       }
     }
   }

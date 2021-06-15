@@ -57,6 +57,7 @@ request.interceptors.response.use(function (response) {
       toLogin()
     }
   } else {
+    Toast.fail('请求信息失败，请稍后重新尝试')
     return Promise.reject(error)
   }
 })
@@ -67,7 +68,7 @@ function toLogin () {
   router.push({
     path: '/login',
     query: {
-      back: router.currentRoute.path
+      back: router.currentRoute.fullPath
     }
   })
   Toast.fail('登录信息失效')

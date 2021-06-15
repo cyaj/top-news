@@ -65,6 +65,11 @@ export default {
   },
   methods: {
     async onLoad () {
+      if (this.refreshing) {
+        this.articleList = []
+        this.timestamp = Date.now()
+        this.refreshing = false
+      }
       const res = await getArticleList(this.channelId, this.timestamp)
       // console.log(res)
       this.timestamp = res.data.pre_timestamp
@@ -75,11 +80,14 @@ export default {
       }
     },
     async onRefresh () {
-      const res = await getArticleList(this.channelId, Date.now())
-      this.articleList = res.data.results
-      this.timestamp = res.data.pre_timestamp
-      this.refreshing = false
+      // const res = await getArticleList(this.channelId, Date.now())
+      // this.articleList = res.data.results
+      // this.timestamp = res.data.pre_timestamp
+      // this.refreshing = false
+      // this.finished = false
       this.finished = false
+      this.loading = true
+      this.onLoad()
     }
   }
 }

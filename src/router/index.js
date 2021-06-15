@@ -70,7 +70,7 @@ router.beforeEach(function (to, from, next) {
     router.push({
       path: '/login',
       query: {
-        back: to.path
+        back: to.fullPath
       }
     })
   } else {

@@ -49,7 +49,6 @@ export default {
     async logout () {
       try {
         await this.$dialog.confirm({
-          theme: 'round-button',
           title: 'Top-News',
           message: '确认退出当前账号吗？'
         })

@@ -35,9 +35,9 @@
 </template>
 
 <script>
-import { getChannelList } from '@/api/channel'
 import ArticleList from './ArticleList'
 import ChannelEdit from './ChannelEdit'
+import { mapState } from 'vuex'
 export default {
   name: 'Home',
   components: {
@@ -47,13 +47,14 @@ export default {
   data () {
     return {
       active: 0,
-      channelList: [],
       isShowChannels: false
     }
   },
+  computed: {
+    ...mapState('channel', ['channelList'])
+  },
   async created () {
-    const res = await getChannelList()
-    this.channelList = res.data.channels
+    this.$store.dispatch('channel/getChannelList')
   }
 }
 </script>

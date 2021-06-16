@@ -35,6 +35,8 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex'
+import { addChannel, delChannel } from '@/api/channel'
+import { setChannelList } from '@/utils/storage'
 export default {
   data () {
     return {
@@ -55,15 +57,29 @@ export default {
       this.$emit('input', index)
       this.$emit('close')
     },
-    addChannel (item) {
+    async addChannel (item) {
+      // 先添加到vuex中
       this.$store.commit('channel/addChannel', item)
+      // 持久化 有token发请求，没token存本地
+      if (this.$store.state.user.token.token) {
+        await addChannel([{ id: item.id, seq: this.channelList.length }])
+      } else {
+        setChannelList(this.channelList)
+      }
     },
-    delChannel (item, index) {
+    async delChannel (item, index) {
       if (this.channelList.length <= 4) return this.$toast('至少保留4个频道')
       // 处理删除之后高亮问题
       if (index < this.value) this.$emit('input', this.value - 1)
       if (index === this.value) this.$emit('input', 0)
+      // 先存vuex中
       this.$store.commit('channel/delChannel', item)
+      // 持久化
+      if (this.$store.state.user.token.token) {
+        await delChannel(item.id)
+      } else {
+        setChannelList(this.channelList)
+      }
     }
   },
   watch: {

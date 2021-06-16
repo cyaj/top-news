@@ -39,6 +39,7 @@
 import ArticleList from './ArticleList'
 import ChannelEdit from './ChannelEdit'
 import { mapState } from 'vuex'
+import { getChannelList } from '@/utils/storage'
 export default {
   name: 'Home',
   components: {
@@ -56,8 +57,21 @@ export default {
   },
   created () {
     // 一进页面先获取数据存储到vuex中
-    this.$store.dispatch('channel/getChannelList')
     this.$store.dispatch('channel/getAllChannelList')
+    // 一进页面判断是否登录
+    if (this.$store.state.user.token.token) {
+      // 登录用户发请求获取频道列表
+      this.$store.dispatch('channel/getChannelList')
+    } else {
+      const res = getChannelList()
+      // 本地有
+      if (res) {
+        this.$store.commit('channel/setChannelList', res)
+      } else {
+        // 本地没有，发请求获取推荐频道列表(没有携带token获取的是推荐列表)
+        this.$store.dispatch('channel/getChannelList')
+      }
+    }
   }
 }
 </script>

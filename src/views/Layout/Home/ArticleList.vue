@@ -17,10 +17,11 @@
           <!-- 文章显示内容插槽 -->
           <template #label>
             <div>
+              <!-- cover.images.length -->
               <van-grid
-                v-if="item.cover.images.length > 0"
+                v-if="item.cover.type > 0"
                 :border="false"
-                :column-num="item.cover.images.length"
+                :column-num="item.cover.type"
               >
                 <van-grid-item
                   v-for="(img, index) in item.cover.images"
@@ -30,7 +31,7 @@
                     lazy-load
                     :src="img"
                     fit="cover"
-                    :class="item.cover.images.length === 1 ? 'one' : 'three'"
+                    :class="item.cover.type === 1 ? 'one' : 'three'"
                   />
                 </van-grid-item>
               </van-grid>

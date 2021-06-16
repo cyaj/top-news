@@ -10,7 +10,8 @@ import axios from '@/utils/request'
 export const getArticleList = (id, timestamp) => {
   return axios({
     method: 'get',
-    url: '/v1_1/articles',
+    // v1_1
+    url: '/v1_0/articles',
     params: {
       channel_id: id,
       timestamp,

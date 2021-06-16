@@ -29,7 +29,8 @@
     </van-tabs>
     <!-- 频道管理弹出层 -->
     <van-action-sheet v-model="isShowChannels" title="频道管理">
-      <ChannelEdit></ChannelEdit>
+      <!-- v-model语法糖 -->
+      <ChannelEdit v-model="active" @close="isShowChannels = false" :isShowChannels="isShowChannels"></ChannelEdit>
     </van-action-sheet>
   </div>
 </template>
@@ -53,8 +54,10 @@ export default {
   computed: {
     ...mapState('channel', ['channelList'])
   },
-  async created () {
+  created () {
+    // 一进页面先获取数据存储到vuex中
     this.$store.dispatch('channel/getChannelList')
+    this.$store.dispatch('channel/getAllChannelList')
   }
 }
 </script>
@@ -88,9 +91,10 @@ export default {
       .van-tabs__line {
         background-color: #1989fa;
       }
-      .van-tab {
-        padding: 0 20px;
-      }
+      // tab有五个频道时，名字显示不全
+      // .van-tab {
+      //   padding: 0 20px;
+      // }
       // 频道管理的开关按钮
       .bar-btn {
         position: fixed;

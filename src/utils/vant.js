@@ -26,7 +26,8 @@ import {
   GridItem,
   PullRefresh,
   Lazyload,
-  ActionSheet
+  ActionSheet,
+  Search
 } from 'vant'
 Vue.use(Button)
 Vue.use(Icon)
@@ -55,3 +56,4 @@ Vue.use(GridItem)
 Vue.use(PullRefresh)
 Vue.use(Lazyload)
 Vue.use(ActionSheet)
+Vue.use(Search)

@@ -9,6 +9,7 @@ import Video from '@/views/Layout/Video'
 import User from '@/views/Layout/User'
 import UserEdit from '@/views/Layout/User/edit'
 import Search from '@/views/Search'
+import Result from '@/views/Search/Result'
 import store from '@/store'
 Vue.use(VueRouter)
 
@@ -53,6 +54,10 @@ const routes = [
   {
     path: '/search',
     component: Search
+  },
+  {
+    path: '/search/result',
+    component: Result
   },
   {
     path: '*',

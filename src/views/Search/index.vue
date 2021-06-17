@@ -2,6 +2,7 @@
   <div class="search">
     <van-nav-bar title="搜索中心" left-arrow @click-left="$router.back()"></van-nav-bar>
     <van-search
+      autofocus
       v-model.trim="keyword"
       show-action
       placeholder="请输入搜索关键词"
@@ -15,7 +16,7 @@
       </template>
     </van-search>
     <!-- 推荐 -->
-    <van-cell-group>
+    <van-cell-group v-if="keyword">
       <van-cell icon="search" v-for="(item, index) in sugList" :key="index" @click="search(item)">
         <template #title>
           <div v-html="highlight(item)"></div>
@@ -23,7 +24,7 @@
       </van-cell>
     </van-cell-group>
      <!-- 历史记录 -->
-    <van-cell-group>
+    <van-cell-group v-else>
       <van-cell title="历史记录"></van-cell>
       <van-cell :title="item" v-for="item in searchList" :key="item">
         <van-icon name="close" @click="del(item)" />
@@ -50,7 +51,10 @@ export default {
       // 防抖处理
       clearTimeout(this.timer)
       this.timer = setTimeout(async () => {
-        if (!this.keyword) return
+        if (!this.keyword) {
+          this.sugList = []
+          return
+        }
         const res = await getSuggestion(this.keyword)
         this.sugList = res.data.options
       }, 500)

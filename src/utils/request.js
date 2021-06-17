@@ -2,11 +2,21 @@ import axios from 'axios'
 import store from '@/store'
 import router from '@/router'
 import { Toast } from 'vant'
+import JSONBig from 'json-bigint'
 const baseURL = 'http://toutiao-app.itheima.net'
 // const baseURL = 'http://localhost:8000'
 const request = axios.create({
   baseURL,
-  timeout: 5000
+  timeout: 5000,
+  transformResponse: [
+    function (data) {
+      try {
+        return JSONBig.parse(data)
+      } catch {
+        return data
+      }
+    }
+  ]
 })
 
 // 添加请求拦截器

@@ -9,9 +9,10 @@
         @load="onLoad"
       >
         <!-- 单条文章 -->
+        <!-- 大数处理 -->
         <van-cell
           v-for="item in articleList"
-          :key="item.art_id"
+          :key="item.art_id.toString()"
           :title="item.title"
         >
           <!-- 文章显示内容插槽 -->
@@ -40,6 +41,7 @@
                 <span>{{ item.aut_name }}</span>
                 <span>{{ item.comm_count }}评论</span>
                 <span>{{ item.pubdate | fromNow }}</span>
+                <!-- <span>{{ item.art_id}}</span> -->
                 <!-- 更多操作按钮 -->
                 <span
                   class="close"
@@ -99,7 +101,7 @@ export default {
         this.timestamp = Date.now()
       }
       const res = await getArticleList(this.channelId, this.timestamp)
-      // console.log(res)
+      console.log('123', res.data.results[0].art_id)
       this.timestamp = res.data.pre_timestamp
       this.articleList = [...this.articleList, ...res.data.results]
       this.loading = false
@@ -119,7 +121,8 @@ export default {
       this.onLoad()
     },
     showMoreAction (artId) {
-      this.artId = artId
+      // 大数处理
+      this.artId = artId.toString()
       // 每次点击显示都显示一级操作
       this.isTop = true
       this.isShowMoreAction = true
@@ -129,7 +132,7 @@ export default {
       await dislikeArticle(this.artId)
       this.isShowMoreAction = false
       this.$toast.success('操作成功')
-      this.articleList = this.articleList.filter(item => item.art_id !== this.artId)
+      this.articleList = this.articleList.filter(item => item.art_id.toString() !== this.artId)
     },
     async report (value) {
       await reportArticle(this.artId, value)

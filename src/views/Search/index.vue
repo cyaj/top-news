@@ -1,6 +1,10 @@
 <template>
   <div class="search">
-    <van-nav-bar title="搜索中心" left-arrow @click-left="$router.back()"></van-nav-bar>
+    <van-nav-bar
+      title="搜索中心"
+      left-arrow
+      @click-left="$router.back()"
+    ></van-nav-bar>
     <van-search
       autofocus
       v-model.trim="keyword"
@@ -17,16 +21,26 @@
     </van-search>
     <!-- 推荐 -->
     <van-cell-group v-if="keyword">
-      <van-cell icon="search" v-for="(item, index) in sugList" :key="index" @click="search(item)">
+      <van-cell
+        icon="search"
+        v-for="(item, index) in sugList"
+        :key="index"
+        @click="search(item)"
+      >
         <template #title>
           <div v-html="highlight(item)"></div>
         </template>
       </van-cell>
     </van-cell-group>
-     <!-- 历史记录 -->
+    <!-- 历史记录 -->
     <van-cell-group v-else>
       <van-cell title="历史记录"></van-cell>
-      <van-cell :title="item" v-for="item in searchList" :key="item">
+      <van-cell
+        :title="item"
+        v-for="item in searchList"
+        :key="item"
+        @click="search(item)"
+      >
         <van-icon name="close" @click="del(item)" />
       </van-cell>
     </van-cell-group>
@@ -74,6 +88,12 @@ export default {
       this.searchList.unshift(keyword)
       // 本地存储
       setHistory(this.searchList)
+      this.$router.push({
+        path: '/search/result',
+        query: {
+          keyword
+        }
+      })
     },
     // 删除搜索历史
     del (keyword) {
@@ -85,6 +105,4 @@ export default {
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

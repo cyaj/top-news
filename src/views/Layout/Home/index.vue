@@ -56,13 +56,15 @@ export default {
     ...mapState('channel', ['channelList'])
   },
   created () {
-    // 一进页面先获取数据存储到vuex中
+    // 持久化频道数据
+    // 一进页面先获取全部数据存储到vuex中，便于计算可选频道
     this.$store.dispatch('channel/getAllChannelList')
     // 一进页面判断是否登录
     if (this.$store.state.user.token.token) {
       // 登录用户发请求获取频道列表
       this.$store.dispatch('channel/getChannelList')
     } else {
+      // 从本地拿
       const res = getChannelList()
       // 本地有
       if (res) {

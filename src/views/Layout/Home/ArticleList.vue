@@ -101,7 +101,7 @@ export default {
         this.timestamp = Date.now()
       }
       const res = await getArticleList(this.channelId, this.timestamp)
-      console.log('123', res.data.results[0].art_id)
+      // console.log('123', res.data.results[0].art_id)
       this.timestamp = res.data.pre_timestamp
       this.articleList = [...this.articleList, ...res.data.results]
       this.loading = false
@@ -132,11 +132,16 @@ export default {
       await dislikeArticle(this.artId)
       this.isShowMoreAction = false
       this.$toast.success('操作成功')
+      // 大数处理
       this.articleList = this.articleList.filter(item => item.art_id.toString() !== this.artId)
     },
     async report (value) {
-      await reportArticle(this.artId, value)
-      this.$toast.success('举报成功')
+      try {
+        await reportArticle(this.artId, value)
+        this.$toast.success('举报成功')
+      } catch (error) {
+        this.$toast.fail('您已经举报过该文章')
+      }
       this.isShowMoreAction = false
     },
     blacklist () {

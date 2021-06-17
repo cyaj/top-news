@@ -8,6 +8,7 @@ const baseURL = 'http://toutiao-app.itheima.net'
 const request = axios.create({
   baseURL,
   timeout: 5000,
+  // 大数处理
   transformResponse: [
     function (data) {
       try {

@@ -1,6 +1,7 @@
 // 操作localStorage
-const TOKEN_NAME = 'top-news'
-const CHANNEL_NAME = 'top-news-channel'
+const TOKEN_NAME = 'top-news' // 用户token
+const CHANNEL_NAME = 'top-news-channel' // 用户频道信息
+const SEARCH_HISTORY = 'top-news-search-history' // 用户搜索历史
 
 // 用户token
 export function getToken () {
@@ -22,4 +23,13 @@ export function setChannelList (channelList) {
 
 export function getChannelList () {
   return JSON.parse(localStorage.getItem(CHANNEL_NAME))
+}
+
+// 用户搜索历史
+export function getHistory () {
+  return JSON.parse(localStorage.getItem(SEARCH_HISTORY)) || []
+}
+
+export function setHistory (list) {
+  localStorage.setItem(SEARCH_HISTORY, JSON.stringify(list))
 }

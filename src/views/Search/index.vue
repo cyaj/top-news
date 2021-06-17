@@ -4,14 +4,19 @@
     <van-search
       v-model.trim="keyword"
       show-action
-      action-text="搜索"
       placeholder="请输入搜索关键词"
       shape="round"
       @input="inputFn"
-    />
+      @search="search(keyword)"
+    >
+      <!-- 右侧搜索按钮 -->
+      <template #action>
+        <span @click="search(keyword)">搜索</span>
+      </template>
+    </van-search>
     <!-- 推荐 -->
     <van-cell-group>
-      <van-cell icon="search" v-for="(item, index) in sugList" :key="index">
+      <van-cell icon="search" v-for="(item, index) in sugList" :key="index" @click="search(item)">
         <template #title>
           <div v-html="highlight(item)"></div>
         </template>
@@ -20,11 +25,8 @@
      <!-- 历史记录 -->
     <van-cell-group>
       <van-cell title="历史记录"></van-cell>
-      <van-cell title="单元格">
-        <van-icon name="close" />
-      </van-cell>
-      <van-cell title="单元格">
-        <van-icon name="close" />
+      <van-cell :title="item" v-for="item in searchList" :key="item">
+        <van-icon name="close" @click="del(item)" />
       </van-cell>
     </van-cell-group>
   </div>
@@ -32,13 +34,15 @@
 
 <script>
 import { getSuggestion } from '@/api/search'
+import { getHistory, setHistory } from '@/utils/storage'
 export default {
   name: 'Search',
   data () {
     return {
       keyword: '',
       sugList: [], // 搜索建议列表
-      timer: ''
+      timer: '',
+      searchList: getHistory() // 搜索历史
     }
   },
   methods: {
@@ -57,6 +61,21 @@ export default {
       return str.replace(reg, match => {
         return `<span style="color: red">${match}</span>`
       })
+    },
+    // 搜索
+    search (keyword) {
+      if (!keyword) return this.$toast.fail('请输入关键字')
+      // 添加历史记录
+      this.searchList = this.searchList.filter(item => item !== keyword)
+      this.searchList.unshift(keyword)
+      // 本地存储
+      setHistory(this.searchList)
+    },
+    // 删除搜索历史
+    del (keyword) {
+      this.searchList = this.searchList.filter(item => item !== keyword)
+      // 本地存储
+      setHistory(this.searchList)
     }
   }
 }

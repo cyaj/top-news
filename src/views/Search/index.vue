@@ -6,7 +6,6 @@
       @click-left="$router.back()"
     ></van-nav-bar>
     <van-search
-      autofocus
       v-model.trim="keyword"
       show-action
       placeholder="请输入搜索关键词"
@@ -14,7 +13,7 @@
       @input="inputFn"
       @search="search(keyword)"
     >
-      <!-- 右侧搜索按钮 -->
+      <!-- 右侧搜索文字 -->
       <template #action>
         <span @click="search(keyword)">搜索</span>
       </template>
@@ -41,7 +40,7 @@
         :key="item"
         @click="search(item)"
       >
-        <van-icon name="close" @click="del(item)" />
+        <van-icon name="close" @click.stop="del(item)" />
       </van-cell>
     </van-cell-group>
   </div>
@@ -59,6 +58,12 @@ export default {
       timer: '',
       searchList: getHistory() // 搜索历史
     }
+  },
+  mounted () {
+    // console.log(this.$refs.search)
+    // this.$refs.search.focus()
+    // 组件原因，自定义指令不生效，找不到input
+    document.querySelector('.search .van-field__control').focus()
   },
   methods: {
     inputFn () {

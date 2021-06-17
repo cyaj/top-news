@@ -18,9 +18,9 @@
     </van-nav-bar>
     <!-- 频道列表 -->
     <van-tabs v-model="active">
-      <van-tab :title="item.name" v-for="item in channelList" :key="item.id">
+      <van-tab :title="item.name" v-for="item in channelList" :key="+item.id">
         <!-- 对应频道文章列表 -->
-        <ArticleList :channelId="item.id"></ArticleList>
+        <ArticleList :channelId="+item.id"></ArticleList>
       </van-tab>
       <!-- 频道列表按钮开关 -->
       <div @click="isShowChannels = true" class="bar-btn">

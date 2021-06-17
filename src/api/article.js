@@ -11,7 +11,7 @@ export const getArticleList = (id, timestamp) => {
   return axios({
     method: 'get',
     // v1_1
-    url: '/v1_0/articles',
+    url: '/v1_1/articles',
     params: {
       channel_id: id,
       timestamp,

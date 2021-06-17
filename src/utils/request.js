@@ -2,8 +2,8 @@ import axios from 'axios'
 import store from '@/store'
 import router from '@/router'
 import { Toast } from 'vant'
-// const baseURL = 'http://toutiao-app.itheima.net'
-const baseURL = 'http://localhost:8000'
+const baseURL = 'http://toutiao-app.itheima.net'
+// const baseURL = 'http://localhost:8000'
 const request = axios.create({
   baseURL,
   timeout: 5000

@@ -72,6 +72,9 @@
         </van-button>
       </div>
     </div>
+    <!-- 文章详情结束 -->
+    <!-- 评论 -->
+    <Comment></Comment>
   </div>
 </template>
 
@@ -79,8 +82,12 @@
 import { getArticleDetail, cancelLike, giveALike, cancelDisLike, dislikeArticle } from '@/api/article'
 import { followUser, unfollowUser } from '@/api/user'
 import { mapState } from 'vuex'
+import Comment from './Comment'
 export default {
   name: 'Article',
+  components: {
+    Comment
+  },
   data () {
     return {
       artDetail: {}, // 文章详情

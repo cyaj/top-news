@@ -21,7 +21,9 @@
           <p class="name">{{ artDetail.aut_name }}</p>
           <p class="time">{{ artDetail.pubdate | fromNow }}</p>
         </div>
-        <van-button round size="small" type="info">+ 关注</van-button>
+        <van-button round size="small" :type="artDetail.is_followed ? 'danger' : 'info'" @click="toggleFollow">
+          {{ artDetail.is_followed ? '取消关注' : '+ 关注' }}
+        </van-button>
       </div>
       <!-- 正文 -->
       <div class="content">
@@ -45,6 +47,7 @@
 
 <script>
 import { getArticleDetail } from '@/api/article'
+import { mapState } from 'vuex'
 export default {
   name: 'Article',
   data () {
@@ -56,12 +59,30 @@ export default {
   computed: {
     artId () {
       return this.$route.params.id
-    }
+    },
+    ...mapState('user', ['token'])
   },
   async created () {
     const res = await getArticleDetail(this.artId)
     this.artDetail = res.data
     this.loading = false
+  },
+  methods: {
+    toggleFollow () {
+      // 判断是否登录
+      if (!this.token.token) {
+        this.$toast.fail('请先登录')
+        this.$router.push({
+          path: '/login',
+          // 登录后当前文章详情页返回应该返回上次历史而不是登录界面
+          // 即登录成功后不以跳转路由的方式返回，而是$router.back()返回，不越过登录页产生历史记录
+          query: {
+            goBack: true
+          }
+        })
+      }
+      // this.artDetail.is_followed = !this.artDetail.is_followed
+    }
   }
 }
 </script>

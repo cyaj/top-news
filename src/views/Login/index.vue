@@ -64,6 +64,9 @@ export default {
         const res = await login(this.mobile, this.code)
         this.setToken(res.data)
         this.$toast.success('登录成功')
+        // 不越过登录页产生额外历史记录
+        if (this.$route.query.goBack) return this.$router.back()
+        // 正常回跳
         const back = this.$route.query.back || '/'
         this.$router.push(back)
       } catch (err) {

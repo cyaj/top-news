@@ -45,3 +45,12 @@ export const reportArticle = (id, type) => {
     }
   })
 }
+
+/**
+ * 获取文章详情
+ * @param {*} id 文章id
+ * @returns promise
+ */
+export const getArticleDetail = id => {
+  return axios.get('/v1_0/articles/' + id)
+}

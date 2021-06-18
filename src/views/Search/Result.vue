@@ -14,7 +14,12 @@
       @load="onLoad"
     >
       <!-- 大数处理 -->
-      <van-cell v-for="item in list" :key="item.art_id.toString()" :title="item.title" />
+      <van-cell
+        v-for="item in list"
+        :key="item.art_id.toString()"
+        :title="item.title"
+        @click="$router.push('/article/' + item.art_id.toString())"
+      />
     </van-list>
   </div>
 </template>

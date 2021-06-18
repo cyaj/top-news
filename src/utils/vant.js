@@ -27,7 +27,9 @@ import {
   PullRefresh,
   Lazyload,
   ActionSheet,
-  Search
+  Search,
+  Loading,
+  Divider
 } from 'vant'
 Vue.use(Button)
 Vue.use(Icon)
@@ -57,3 +59,5 @@ Vue.use(PullRefresh)
 Vue.use(Lazyload)
 Vue.use(ActionSheet)
 Vue.use(Search)
+Vue.use(Loading)
+Vue.use(Divider)

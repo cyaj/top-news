@@ -14,6 +14,7 @@
           v-for="item in articleList"
           :key="item.art_id.toString()"
           :title="item.title"
+          @click="$router.push('/article/' + item.art_id.toString())"
         >
           <!-- 文章显示内容插槽 -->
           <template #label>

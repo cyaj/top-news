@@ -10,6 +10,7 @@ import User from '@/views/Layout/User'
 import UserEdit from '@/views/Layout/User/edit'
 import Search from '@/views/Search'
 import Result from '@/views/Search/Result'
+import Article from '@/views/Article'
 import store from '@/store'
 Vue.use(VueRouter)
 
@@ -58,6 +59,10 @@ const routes = [
   {
     path: '/search/result',
     component: Result
+  },
+  {
+    path: '/article/:id',
+    component: Article
   },
   {
     path: '*',

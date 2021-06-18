@@ -65,7 +65,7 @@
           hairline
           type="danger"
           plain
-          icon="delete"
+          :icon="artDetail.attitude === 0 ? 'delete' : 'delete-o'"
           @click="dislike"
         >
           {{ artDetail.attitude === 0 ? "取消" : "不喜欢" }}
@@ -140,11 +140,9 @@ export default {
       }
       if (this.artDetail.attitude === 1) {
         // 取消点赞
-        const res = await cancelLike(this.artId)
-        console.log(res)
+        await cancelLike(this.artId)
       } else {
-        const res = await giveALike(this.artId)
-        console.log(res)
+        await giveALike(this.artId)
       }
       this.$toast.success('操作成功')
       this.artDetail.attitude = this.artDetail.attitude === 1 ? -1 : 1

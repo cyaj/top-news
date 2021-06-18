@@ -54,3 +54,42 @@ export const reportArticle = (id, type) => {
 export const getArticleDetail = id => {
   return axios.get('/v1_0/articles/' + id)
 }
+
+/**
+ * 对文章点赞
+ * @param {*} id 文章id
+ * @returns promise
+ */
+export const giveALike = id => {
+  return axios({
+    method: 'post',
+    url: '/v1_0/article/likings',
+    data: {
+      target: id
+    }
+  })
+}
+
+/**
+ * 取消对文章点赞
+ * @param {*} id 文章id
+ * @returns
+ */
+export const cancelLike = id => {
+  return axios({
+    method: 'delete',
+    url: '/v1_0/article/likings/' + id
+  })
+}
+
+/**
+ * 取消对文章不喜欢
+ * @param {*} id 文章id
+ * @returns
+ */
+export const cancelDisLike = id => {
+  return axios({
+    method: 'delete',
+    url: '/v1_0/article/dislikes/' + id
+  })
+}

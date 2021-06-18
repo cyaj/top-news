@@ -16,13 +16,24 @@
       <h3 class="title">{{ artDetail.title }}</h3>
       <!-- 作者 -->
       <div class="author">
-        <van-image :src="artDetail.aut_photo" round width="1rem" height="1rem" fit="cover" />
+        <van-image
+          :src="artDetail.aut_photo"
+          round
+          width="1rem"
+          height="1rem"
+          fit="cover"
+        />
         <div class="text">
           <p class="name">{{ artDetail.aut_name }}</p>
           <p class="time">{{ artDetail.pubdate | fromNow }}</p>
         </div>
-        <van-button round size="small" :type="artDetail.is_followed ? 'danger' : 'info'" @click="toggleFollow">
-          {{ artDetail.is_followed ? '取消关注' : '+ 关注' }}
+        <van-button
+          round
+          size="small"
+          :type="artDetail.is_followed ? 'danger' : 'info'"
+          @click="toggleFollow"
+        >
+          {{ artDetail.is_followed ? "取消关注" : "+ 关注" }}
         </van-button>
       </div>
       <!-- 正文 -->
@@ -30,15 +41,34 @@
         <div v-html="artDetail.content"></div>
       </div>
       <!-- 分割线 -->
-      <van-divider :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px' }">END</van-divider>
+      <van-divider
+        :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px' }"
+        >END</van-divider
+      >
       <!-- 点赞 -->
       <div class="zan">
-        <van-button round size="small" hairline type="primary" plain icon="good-job-o">
-          点赞
+        <van-button
+          round
+          size="small"
+          hairline
+          type="primary"
+          plain
+          :icon="artDetail.attitude === 1 ? 'good-job' : 'good-job-o'"
+          @click="like"
+        >
+          {{ artDetail.attitude === 1 ? "取消" : "点赞" }}
         </van-button>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <van-button round size="small" hairline type="danger" plain icon="delete">
-          不喜欢
+        <van-button
+          round
+          size="small"
+          hairline
+          type="danger"
+          plain
+          icon="delete"
+          @click="dislike"
+        >
+          {{ artDetail.attitude === 0 ? "取消" : "不喜欢" }}
         </van-button>
       </div>
     </div>
@@ -46,7 +76,7 @@
 </template>
 
 <script>
-import { getArticleDetail } from '@/api/article'
+import { getArticleDetail, cancelLike, giveALike, cancelDisLike, dislikeArticle } from '@/api/article'
 import { followUser, unfollowUser } from '@/api/user'
 import { mapState } from 'vuex'
 export default {
@@ -58,6 +88,7 @@ export default {
     }
   },
   computed: {
+    // 传过来的时候已被大数处理过，可放心食用
     artId () {
       return this.$route.params.id
     },
@@ -93,12 +124,58 @@ export default {
       }
       this.$toast.success('操作成功')
       this.artDetail.is_followed = !this.artDetail.is_followed
+    },
+    // 点赞
+    async like () {
+      if (!this.token.token) {
+        // 没有登录
+        this.$toast.fail('请先登录')
+        this.$router.push({
+          path: '/login',
+          query: {
+            goBack: true
+          }
+        })
+        return
+      }
+      if (this.artDetail.attitude === 1) {
+        // 取消点赞
+        const res = await cancelLike(this.artId)
+        console.log(res)
+      } else {
+        const res = await giveALike(this.artId)
+        console.log(res)
+      }
+      this.$toast.success('操作成功')
+      this.artDetail.attitude = this.artDetail.attitude === 1 ? -1 : 1
+    },
+    // 不喜欢
+    async dislike () {
+      if (!this.token.token) {
+        // 没有登录
+        this.$toast.fail('请先登录')
+        this.$router.push({
+          path: '/login',
+          query: {
+            goBack: true
+          }
+        })
+        return
+      }
+      if (this.artDetail.attitude === 0) {
+        // 0是不喜欢
+        await cancelDisLike(this.artId)
+      } else {
+        await dislikeArticle(this.artId)
+      }
+      this.$toast.success('操作成功')
+      this.artDetail.attitude = this.artDetail.attitude === 0 ? -1 : 0
     }
   }
 }
 </script>
 
-<style lang='less' scoped>
+<style lang="less" scoped>
 .loading {
   height: 100vh;
   text-align: center;
@@ -106,7 +183,7 @@ export default {
   align-items: center;
   justify-content: center;
 }
-.article-container{
+.article-container {
   position: absolute;
   left: 0;
   top: 0;
@@ -118,7 +195,7 @@ export default {
   padding-top: 100px;
   text-align: center;
 }
-.error{
+.error {
   padding-top: 100px;
   text-align: center;
 }
@@ -127,7 +204,7 @@ export default {
   .title {
     font-size: 16px;
   }
-  .zan{
+  .zan {
     text-align: center;
   }
   .author {
@@ -149,12 +226,12 @@ export default {
     }
   }
   .content {
-    font-size:14px;
+    font-size: 14px;
     overflow: hidden;
     white-space: pre-wrap;
     word-break: break-all;
     ::v-deep img {
-      max-width:100%;
+      max-width: 100%;
       background: #f9f9f9;
     }
   }

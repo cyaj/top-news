@@ -128,3 +128,30 @@ export function addComment (artId, content) {
     }
   })
 }
+
+/**
+ * 对评论点赞
+ * @param {*} commentId 评论的id
+ * @returns
+ */
+export function addCommentZan (commentId) {
+  return axios({
+    url: '/v1_0/comment/likings',
+    method: 'post',
+    data: {
+      target: commentId
+    }
+  })
+}
+
+/**
+ * 取消评论点赞
+ * @param {*} commentId 评论的id
+ * @returns
+ */
+export function cancelCommentZan (commentId) {
+  return axios({
+    url: '/v1_0/comment/likings/' + commentId,
+    method: 'DELETE'
+  })
+}

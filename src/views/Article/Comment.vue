@@ -8,6 +8,7 @@
       @load="onLoad"
     >
       <!-- 每条评论 -->
+      <!-- 大数处理 -->
       <van-cell v-for="item in commentList" :key="item.com_id.toString()">
         <van-image
           slot="icon"
@@ -21,11 +22,19 @@
         <div slot="label">
           <p style="color: #363636;">{{ item.content }}</p>
           <p>
-            <span style="margin-right: 10px;">{{ item.pubdate | fromNow }}</span>
-            <van-button size="mini" type="default">回复</van-button>
+            <span style="margin-right: 10px;">
+              {{ item.pubdate | fromNow }}
+            </span>
+            <van-button size="mini" type="default">
+              回复 ({{ item.reply_count }})
+            </van-button>
           </p>
         </div>
-        <van-icon slot="right-icon" name="like-o" />
+        <van-icon
+          slot="right-icon"
+          :name="item.is_liking ? 'like' : 'like-o'"
+          @click="zan(item)"
+        />
       </van-cell>
     </van-list>
     <!-- /评论列表 -->
@@ -42,7 +51,12 @@
 </template>
 
 <script>
-import { getCommentList, addComment } from '@/api/article'
+import {
+  getCommentList,
+  addComment,
+  addCommentZan,
+  cancelCommentZan
+} from '@/api/article'
 export default {
   props: {},
   data () {
@@ -64,6 +78,7 @@ export default {
       const res = await getCommentList(this.artId, this.offset)
       // console.log(res)
       this.commentList = [...this.commentList, ...res.data.results]
+      // 分页参数，用于获取下一页
       this.offset = res.data.last_id
       this.loading = false
       if (res.data.results.length === 0) {
@@ -77,6 +92,15 @@ export default {
       this.$toast.success('添加评论成功')
       this.content = ''
       this.commentList.unshift(res.data.new_obj)
+    },
+    async zan (item) {
+      if (item.is_liking) {
+        await cancelCommentZan(item.com_id.toString()) // 大数处理
+      } else {
+        await addCommentZan(item.com_id.toString())
+      }
+      this.$toast.success('操作成功')
+      item.is_liking = !item.is_liking
     }
   }
 }

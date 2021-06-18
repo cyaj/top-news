@@ -47,6 +47,7 @@
 
 <script>
 import { getArticleDetail } from '@/api/article'
+import { followUser, unfollowUser } from '@/api/user'
 import { mapState } from 'vuex'
 export default {
   name: 'Article',
@@ -68,7 +69,7 @@ export default {
     this.loading = false
   },
   methods: {
-    toggleFollow () {
+    async toggleFollow () {
       // 判断是否登录
       if (!this.token.token) {
         this.$toast.fail('请先登录')
@@ -80,8 +81,18 @@ export default {
             goBack: true
           }
         })
+        return
       }
-      // this.artDetail.is_followed = !this.artDetail.is_followed
+      if (this.artDetail.is_followed) {
+        // 取关
+        await unfollowUser(this.artDetail.aut_id)
+      }
+      if (!this.artDetail.is_followed) {
+        // 关注
+        await followUser(this.artDetail.aut_id)
+      }
+      this.$toast.success('操作成功')
+      this.artDetail.is_followed = !this.artDetail.is_followed
     }
   }
 }

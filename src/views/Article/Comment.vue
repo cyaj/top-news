@@ -8,20 +8,20 @@
       @load="onLoad"
     >
       <!-- 每条评论 -->
-      <van-cell v-for="item in list" :key="item">
+      <van-cell v-for="item in commentList" :key="item.com_id.toString()">
         <van-image
           slot="icon"
           round
           width="30"
           height="30"
           style="margin-right: 10px;"
-          src="https://img.yzcdn.cn/vant/cat.jpeg"
+          :src="item.aut_photo"
         />
-        <span style="color: #466b9d;" slot="title">hello</span>
+        <span style="color: #466b9d;" slot="title">{{ item.aut_name }}</span>
         <div slot="label">
-          <p style="color: #363636;">我出去跟别人说我的是。。。</p>
+          <p style="color: #363636;">{{ item.content }}</p>
           <p>
-            <span style="margin-right: 10px;">3天前</span>
+            <span style="margin-right: 10px;">{{ item.pubdate | fromNow }}</span>
             <van-button size="mini" type="default">回复</van-button>
           </p>
         </div>
@@ -31,8 +31,10 @@
     <!-- /评论列表 -->
     <!-- 发布评论 -->
     <van-cell-group class="publish-wrap">
-      <van-field clearable placeholder="请输入评论内容">
-        <van-button slot="button" size="mini" type="info">发布</van-button>
+      <van-field clearable placeholder="请输入评论内容" v-model.trim="content">
+        <van-button slot="button" size="mini" type="info" @click="addComment">
+          发布
+        </van-button>
       </van-field>
     </van-cell-group>
     <!-- /发布评论 -->
@@ -40,30 +42,41 @@
 </template>
 
 <script>
+import { getCommentList, addComment } from '@/api/article'
 export default {
   props: {},
   data () {
     return {
-      list: [], // 评论列表
-      loading: false, // 上拉加载更多的 loading
-      finished: false // 是否加载结束
+      commentList: [], // 评论列表
+      loading: false, // 上拉加载更多，false时才可以触发加载
+      finished: false, // 是否加载结束
+      offset: null, // 获取评论列表的分页参数
+      content: '' // 评论内容
+    }
+  },
+  computed: {
+    artId () {
+      return this.$route.params.id
     }
   },
   methods: {
-    onLoad () {
-      // 异步更新数据
-      setTimeout(() => {
-        for (let i = 0; i < 10; i++) {
-          this.list.push(this.list.length + 1)
-        }
-        // 加载状态结束
-        this.loading = false
-
-        // 数据全部加载完成
-        if (this.list.length >= 40) {
-          this.finished = true
-        }
-      }, 500)
+    async onLoad () {
+      const res = await getCommentList(this.artId, this.offset)
+      // console.log(res)
+      this.commentList = [...this.commentList, ...res.data.results]
+      this.offset = res.data.last_id
+      this.loading = false
+      if (res.data.results.length === 0) {
+        this.finished = true
+      }
+    },
+    async addComment () {
+      if (!this.content) return this.$toast('请输入评论内容')
+      const res = await addComment(this.artId, this.content)
+      // console.log(res)
+      this.$toast.success('添加评论成功')
+      this.content = ''
+      this.commentList.unshift(res.data.new_obj)
     }
   }
 }

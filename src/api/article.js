@@ -93,3 +93,38 @@ export const cancelDisLike = id => {
     url: '/v1_0/article/dislikes/' + id
   })
 }
+
+/**
+ * 获取评论
+ * @param {*} artId 文章的id
+ * @param {*} offset 上一次返回的id，用于分页。如果是第一页，可以为null
+ * @returns
+ */
+export function getCommentList (artId, offset) {
+  return axios({
+    method: 'get',
+    url: '/v1_0/comments',
+    params: {
+      type: 'a',
+      source: artId,
+      offset
+    }
+  })
+}
+
+/**
+ * 发表文章评论
+ * @param {*} artId 文章id
+ * @param {*} content 评论内容
+ * @returns
+ */
+export function addComment (artId, content) {
+  return axios({
+    method: 'post',
+    url: '/v1_0/comments',
+    data: {
+      target: artId,
+      content
+    }
+  })
+}

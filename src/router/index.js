@@ -8,6 +8,7 @@ import QA from '@/views/Layout/QA'
 import Video from '@/views/Layout/Video'
 import User from '@/views/Layout/User'
 import UserEdit from '@/views/Layout/User/edit'
+import Chat from '@/views/Layout/User/chat'
 import Search from '@/views/Search'
 import Result from '@/views/Search/Result'
 import Article from '@/views/Article'
@@ -54,6 +55,10 @@ const routes = [
   {
     path: '/user/edit',
     component: UserEdit
+  },
+  {
+    path: '/user/chat',
+    component: Chat
   },
   {
     path: '/search',

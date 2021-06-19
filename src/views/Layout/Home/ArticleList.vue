@@ -1,5 +1,5 @@
 <template>
-  <div class="article-list">
+  <div class="article-list" ref="scroll" @scroll="scrollFn">
     <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
       <!-- 文章列表 -->
       <van-list
@@ -67,7 +67,12 @@
           <!-- 二级操作 -->
           <van-cell-group v-else>
             <van-cell icon="arrow-left" @click="isTop = true">返回</van-cell>
-            <van-cell v-for="item in reports" :key="item.value" @click="report(item.value)">{{ item.label }}</van-cell>
+            <van-cell
+              v-for="item in reports"
+              :key="item.value"
+              @click="report(item.value)"
+              >{{ item.label }}</van-cell
+            >
           </van-cell-group>
         </van-popup>
       </van-list>
@@ -92,10 +97,19 @@ export default {
       isShowMoreAction: false,
       isTop: true,
       artId: '',
-      reports
+      reports,
+      scrollTop: 0 // 记录滚动位置
     }
   },
+  activated () {
+    // 组件缓存并不会销毁数据，重新激活时还原滚动高度
+    this.$refs.scroll.scrollTop = this.scrollTop
+  },
   methods: {
+    scrollFn () {
+      // 滚动时记录滚动高度
+      this.scrollTop = this.$refs.scroll.scrollTop
+    },
     async onLoad () {
       if (this.refreshing) {
         this.articleList = []
@@ -134,7 +148,9 @@ export default {
       this.isShowMoreAction = false
       this.$toast.success('操作成功')
       // 大数处理
-      this.articleList = this.articleList.filter(item => item.art_id.toString() !== this.artId)
+      this.articleList = this.articleList.filter(
+        item => item.art_id.toString() !== this.artId
+      )
     },
     async report (value) {
       try {

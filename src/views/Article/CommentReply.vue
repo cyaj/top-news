@@ -104,6 +104,8 @@ export default {
       this.replyList.unshift(res.data.new_obj)
       this.$toast.success('回复成功')
       this.content = ''
+      // 父组件中回复数量需要同步增加
+      this.$emit('addCount')
     }
   }
 }

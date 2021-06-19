@@ -53,7 +53,8 @@
       title="评论回复"
       style="height: 66%"
     >
-      <CommentReply :comment="currentComment"></CommentReply>
+      <!-- 组件不会重新创建，里面内容不会变，用v-if解决 -->
+      <CommentReply :comment="currentComment" v-if="isShowReply" @addCount="addCount"></CommentReply>
     </van-action-sheet>
   </div>
 </template>
@@ -118,6 +119,9 @@ export default {
     showReply (item) {
       this.isShowReply = true
       this.currentComment = item
+    },
+    addCount () {
+      this.currentComment.reply_count++
     }
   }
 }

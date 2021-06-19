@@ -28,7 +28,10 @@ const routes = [
     children: [
       {
         path: '',
-        component: Home
+        component: Home,
+        meta: {
+          isKeepAlive: true // 是否缓存
+        }
       },
       {
         path: 'qa',

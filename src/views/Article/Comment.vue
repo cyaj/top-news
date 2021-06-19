@@ -54,7 +54,11 @@
       style="height: 66%"
     >
       <!-- 组件不会重新创建，里面内容不会变，用v-if解决 -->
-      <CommentReply :comment="currentComment" v-if="isShowReply" @addCount="addCount"></CommentReply>
+      <CommentReply
+        :comment="currentComment"
+        v-if="isShowReply"
+        @addCount="addCount"
+      ></CommentReply>
     </van-action-sheet>
   </div>
 </template>

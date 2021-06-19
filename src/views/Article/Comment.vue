@@ -25,7 +25,7 @@
             <span style="margin-right: 10px;">
               {{ item.pubdate | fromNow }}
             </span>
-            <van-button size="mini" type="default">
+            <van-button size="mini" type="default" @click="showReply(item)">
               回复 ({{ item.reply_count }})
             </van-button>
           </p>
@@ -47,6 +47,14 @@
       </van-field>
     </van-cell-group>
     <!-- /发布评论 -->
+    <!-- 回复评论 -->
+    <van-action-sheet
+      v-model="isShowReply"
+      title="评论回复"
+      style="height: 66%"
+    >
+      <CommentReply :comment="currentComment"></CommentReply>
+    </van-action-sheet>
   </div>
 </template>
 
@@ -57,15 +65,20 @@ import {
   addCommentZan,
   cancelCommentZan
 } from '@/api/article'
+import CommentReply from './CommentReply'
 export default {
-  props: {},
+  components: {
+    CommentReply
+  },
   data () {
     return {
       commentList: [], // 评论列表
       loading: false, // 上拉加载更多，false时才可以触发加载
       finished: false, // 是否加载结束
       offset: null, // 获取评论列表的分页参数
-      content: '' // 评论内容
+      content: '', // 评论内容
+      isShowReply: false,
+      currentComment: {} // 当前回复的评论
     }
   },
   computed: {
@@ -101,6 +114,10 @@ export default {
       }
       this.$toast.success('操作成功')
       item.is_liking = !item.is_liking
+    },
+    showReply (item) {
+      this.isShowReply = true
+      this.currentComment = item
     }
   }
 }

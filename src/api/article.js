@@ -155,3 +155,40 @@ export function cancelCommentZan (commentId) {
     method: 'DELETE'
   })
 }
+
+/**
+ * 获取评论回复
+ * @param {*} commentId 评论的id
+ * @param {*} offset 分页用，不传从第一页开始
+ * @returns
+ */
+export function getReplyList (commentId, offset) {
+  return axios({
+    url: '/v1_0/comments',
+    method: 'get',
+    params: {
+      type: 'c',
+      source: commentId,
+      offset
+    }
+  })
+}
+
+/**
+ * 添加评论回复
+ * @param {*} commentId 回复的评论的id
+ * @param {*} content 评论内容
+ * @param {*} articleId 评论所属文章的id
+ * @returns
+ */
+export function addReply (commentId, content, articleId) {
+  return axios({
+    method: 'post',
+    url: '/v1_0/comments',
+    data: {
+      target: commentId,
+      content,
+      art_id: articleId
+    }
+  })
+}

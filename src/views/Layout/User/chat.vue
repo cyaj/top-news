@@ -16,13 +16,21 @@
         <!-- 右侧是当前用户 -->
         <div class="chat-item right" v-else>
           <div class="chat-pao my">{{ item.msg }}</div>
-          <van-image fit="cover" round :src="$store.state.user.userInfo.photo" />
+          <van-image
+            fit="cover"
+            round
+            :src="$store.state.user.userInfo.photo"
+          />
         </div>
       </div>
     </div>
     <!-- 输消息 -->
     <div class="reply-container van-hairline--top">
-      <van-field v-model.trim="word" placeholder="说点什么..." @keyup.enter="send">
+      <van-field
+        v-model.trim="word"
+        placeholder="说点什么..."
+        @keyup.enter="send"
+      >
         <span @click="send" slot="button" style="font-size:12px;color:#999">
           发送
         </span>
@@ -56,7 +64,7 @@ export default {
     })
     // 当服务器给我们发消息时会触发
     socket.on('message', data => {
-      console.log(data)
+      // console.log(data)
       this.list.push({
         type: 1,
         msg: data.msg,

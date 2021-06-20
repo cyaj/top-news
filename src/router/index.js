@@ -1,18 +1,21 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '@/views/Login'
-import Layout from '@/views/Layout'
-import NotFound from '@/views/404'
-import Home from '@/views/Layout/Home'
-import QA from '@/views/Layout/QA'
-import Video from '@/views/Layout/Video'
-import User from '@/views/Layout/User'
-import UserEdit from '@/views/Layout/User/edit'
-import Chat from '@/views/Layout/User/chat'
-import Search from '@/views/Search'
-import Result from '@/views/Search/Result'
-import Article from '@/views/Article'
 import store from '@/store'
+const Login = () => import('@/views/Login')
+const Layout = () => import('@/views/Layout')
+const NotFound = () => import('@/views/404')
+const Home = () => import('@/views/Layout/Home')
+const QA = () => import('@/views/Layout/QA')
+const Video = () => import('@/views/Layout/Video')
+// 用户相关组件
+const User = () => import(/* webpackChunkName: "user" */ '@/views/Layout/User')
+const UserEdit = () => import(/* webpackChunkName: "user" */ '@/views/Layout/User/edit')
+const Chat = () => import(/* webpackChunkName: "user" */ '@/views/Layout/User/chat')
+// 搜索相关组件
+const Search = () => import(/* webpackChunkName: "search" */ '@/views/Search')
+const Result = () => import(/* webpackChunkName: "search" */ '@/views/Search/Result')
+
+const Article = () => import('@/views/Article')
 Vue.use(VueRouter)
 
 // 解决路由报错问题

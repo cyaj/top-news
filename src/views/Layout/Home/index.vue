@@ -20,7 +20,7 @@
     <van-tabs v-model="active">
       <van-tab :title="item.name" v-for="item in channelList" :key="+item.id">
         <!-- 对应频道文章列表 -->
-        <ArticleList :channelId="+item.id"></ArticleList>
+        <ArticleList ref="list" :channelId="+item.id"></ArticleList>
       </van-tab>
       <!-- 频道列表按钮开关 -->
       <div @click="isShowChannels = true" class="bar-btn">
@@ -73,6 +73,16 @@ export default {
         // 本地没有，发请求获取推荐频道列表(没有携带token获取的是推荐列表)
         this.$store.dispatch('channel/getChannelList')
       }
+    }
+  },
+  // 监听active，当组件切换时让所有渲染过的组件滚动
+  watch: {
+    async active () {
+      // active发送变化，等待dom更新后再执行函数，以获取全部渲染过的list
+      await this.$nextTick()
+      this.$refs.list.forEach(item => {
+        item.scrollToTop()
+      })
     }
   }
 }

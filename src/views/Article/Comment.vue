@@ -109,6 +109,8 @@ export default {
       // console.log(res)
       this.$toast.success('添加评论成功')
       this.content = ''
+      // 后端返回数据缺失is_likling, 会造成新增的评论没刷新之前无法点赞
+      res.data.new_obj.is_liking = false
       this.commentList.unshift(res.data.new_obj)
     },
     async zan (item) {

@@ -103,12 +103,17 @@ export default {
   },
   activated () {
     // 组件缓存并不会销毁数据，重新激活时还原滚动高度
-    this.$refs.scroll.scrollTop = this.scrollTop
+    this.scrollToTop()
   },
   methods: {
     scrollFn () {
       // 滚动时记录滚动高度
       this.scrollTop = this.$refs.scroll.scrollTop
+    },
+    // 封装方便父组件在激活子组件时调用
+    scrollToTop () {
+      // 组件缓存并不会销毁数据，重新激活时还原滚动高度
+      this.$refs.scroll.scrollTop = this.scrollTop
     },
     async onLoad () {
       if (this.refreshing) {

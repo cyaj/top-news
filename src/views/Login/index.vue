@@ -1,6 +1,12 @@
 <template>
   <div>
-    <van-nav-bar title="登录" left-arrow left-text="回到首页" @click-left="$router.push('/')" />
+    <van-nav-bar
+      title="登录"
+      left-arrow
+      right-text="首页"
+      @click-left="$router.back()"
+      @click-right="$router.push('/')"
+    />
     <van-form @submit="login">
       <van-field
         required

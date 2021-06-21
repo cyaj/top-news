@@ -48,7 +48,7 @@
                   class="close"
                   style="float: right"
                   v-if="$store.state.user.token.token"
-                  @click="showMoreAction(item.art_id)"
+                  @click.stop="showMoreAction(item.art_id)"
                 >
                   <van-icon name="cross"></van-icon>
                 </span>
